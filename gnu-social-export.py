@@ -31,7 +31,7 @@ def main():
     )
     accounts = {
         '{}@{}\n'.format(
-            account['statusnet_profile_url'].split('/')[-1],
+            account['statusnet_profile_url'].split('/')[-1].lstrip('@'),
             account['statusnet_profile_url'].split('/')[2],
         )
         for account in r.json()
