@@ -159,3 +159,6 @@ cscope.po.out
 following_accounts.csv
 pytooter_usercred.secret
 pytooter_clientcred.secret
+
+.vscode/
+*.csv
