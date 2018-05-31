@@ -22,21 +22,18 @@ def main():
     credentials = (os.environ['GNU_SOCIAL_USER'],
                    os.environ['GNU_SOCIAL_PASS'])
     pagesize = 100
+    resource = 'followers' if args.followers is True else 'friends'
+
     r = requests.get(
         apiroot + 'statuses/user_timeline.json', auth=credentials)
-    t = 'followers' if args.followers is True else 'friends'
-    page_count = r.json()[0]['user'][t + '_count'] // pagesize + 1
+    page_count = r.json()[0]['user'][resource + '_count'] // pagesize + 1
     e_print('will make {} requests'.format(page_count))
 
-    if args.followers is True:
-        endpoint = 'statuses/followers.json'
-    else:
-        endpoint = 'statuses/friends.json'
     accounts = []
     for i in range(1, page_count + 1):
         r = requests.get(
-            '{}{}?count={}&page={}'.format(
-                apiroot, endpoint, pagesize, i),
+            '{}statuses/{}.json?count={}&page={}'.format(
+                apiroot, resource, pagesize, i),
             auth=credentials)
         accounts += [
             '@'.join([
@@ -47,7 +44,7 @@ def main():
         ]
         e_print('request #{} processed'.format(i))
 
-    e_print('ready')
+    e_print('finished')
     for acc in accounts:
         print(acc)
 
